@@ -1,2 +1,2 @@
-# react-store
+# react-store for shows
 
