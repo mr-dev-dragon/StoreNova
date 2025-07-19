@@ -7,14 +7,14 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
     <li
       key={index}
       className={classNames([
-        "text-gray-400 hover:text-gray-700 cursor-pointer font-medium tracking-wide text-sm flex items-center justify-center gap-1 px-2",
+        "text-black-500  cursor-pointer font-medium tracking-wide text-md flex items-center justify-center gap-1 px-2",
         currentRoute === item.title && item.section === "navigation"
-          ? "text-blue-400 border-b-3 border-blue-400 bg-gradient-to-b from-white to-gray-100"
+          ? "text-purple-600 border-b-3 border-purple-400 bg-gradient-to-b from-white to-gray-100"
           : "",
-        item.section === "actions" ? "w-18" : "w-25",
+        item.section === "actions" ? "w-17.5 " : "w-25",
         currentRoute === item.title &&
           item.section === "logo" &&
-          " text-gray-700",
+          " text-black-500",
       ])}
       onClick={() => setCurrentRoute(item.title)}
     >
@@ -24,7 +24,7 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
             "text-xl",
             currentRoute === item.title &&
               item.section === "actions" &&
-              "text-blue-400 drop-shadow-sm ",
+              "text-purple-600 drop-shadow-sm ",
           ])}
         />
       )}
@@ -37,7 +37,7 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
             "h-8 w-8 rounded-full object-cover",
             currentRoute === item.title &&
               item.section === "settings" &&
-              " border-3 border-blue-400 w-10 h-10",
+              " border-3 border-purple-600 w-10 h-10",
           ])}
         />
       )}
@@ -46,8 +46,9 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       {item.itemCount > 0 && (
         <span
           className={classNames([
-            "ml-1 bg-red-200 text-white text-xs px-1.5 py-0.5 rounded-full",
-            currentRoute === item.title && "  bg-red-400    rounded-full ",
+            "ml-0.5 bg-red-300 text-white  px-0.5 py-0 rounded-full",
+            styles.textxxs,
+            currentRoute === item.title && "  bg-red-500",
           ])}
         >
           {item.itemCount}
@@ -71,7 +72,7 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       <ul className="flex flex-row  h-12">{sections.logo.map(renderItem)}</ul>
 
       {/* SEARCH */}
-      <ul className="flex flex-row  h-12">
+      <ul className="flex flex-row  h-8">
         {searchBar && searchBar.input && (
           <li className={styles.containerInput}>
             <div className={styles["search-container"]}>
@@ -96,17 +97,15 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       </ul>
 
       {/* NAVIGATION */}
-      <ul className="flex flex-row  h-12">
+      <ul className="flex flex-row  h-8">
         {sections.navigation.map(renderItem)}
       </ul>
 
       {/* ACTIONS */}
-      <ul className="flex flex-row  h-12">
-        {sections.actions.map(renderItem)}
-      </ul>
+      <ul className="flex flex-row  h-8">{sections.actions.map(renderItem)}</ul>
 
       {/* SETTINGS */}
-      <ul className="flex flex-row  h-12">
+      <ul className="flex flex-row  h-8">
         {sections.settings.map(renderItem)}
       </ul>
     </nav>
