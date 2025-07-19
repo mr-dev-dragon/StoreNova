@@ -4,6 +4,7 @@ import {
   FaUserCircle, FaUser, FaCog, FaSignOutAlt
 } from "react-icons/fa";
 import { MdOutlineMoreHoriz } from 'react-icons/md';
+import { AiFillSetting } from 'react-icons/ai';
 import amgAvatar from "./avatar.png";
 export default [
   {
@@ -92,7 +93,7 @@ export default [
     section: "settings",
     title: "Profile",
      avatar: amgAvatar,
-    icon:  MdOutlineMoreHoriz ,
+    icon: AiFillSetting  ,
     showTitle: false,
     showIcon: true,
     route: "/profile",

@@ -44,7 +44,12 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       {/* {item.title === "settings" && <item.icon className={classNames([""])} />} */}
       {item.showTitle && <span className="leading-none">{item.title}</span>}
       {item.itemCount > 0 && (
-        <span className="ml-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+        <span
+          className={classNames([
+            "ml-1 bg-red-200 text-white text-xs px-1.5 py-0.5 rounded-full",
+            currentRoute === item.title && "  bg-red-400    rounded-full ",
+          ])}
+        >
           {item.itemCount}
         </span>
       )}
