@@ -5,7 +5,7 @@ import { FaDev } from "react-icons/fa";
 import useNavigation from "../Components/Navigation/hook/useNavigation";
 import navigationData from "../Components/Navigation/data/navigation";
 import Navbar from "../Components/Navigation/navbar";
-import Tabbar from "../Components/Navigation/Tabbar";
+// import Tabbar from "../Components/Navigation/Tabbar";
 import "./home.css";
 
 const Home = () => {
@@ -18,11 +18,11 @@ const Home = () => {
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-      <Tabbar
+      {/* <Tabbar
         navigationData={navigationData}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
-      />
+      /> */}
       <div className={"flex   text-5xl text-gray-300 "}>
         <Products />
         <Recommended />
