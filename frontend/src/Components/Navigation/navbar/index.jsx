@@ -9,7 +9,7 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       className={classNames([
         "text-black-500  cursor-pointer font-medium tracking-wide text-md flex items-center justify-center gap-1 px-2",
         currentRoute === item.title && item.section === "navigation"
-          ? "text-purple-600 border-b-3 border-purple-400 bg-gradient-to-b from-white to-gray-100"
+          ? "text-purple-600   border-purple-400  from-white "
           : "",
         item.section === "actions" ? "w-14 " : "w-25",
         currentRoute === item.title &&
@@ -43,10 +43,10 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
           src={item.avatar}
           alt={item.title}
           className={classNames([
-            "h-9 w-9 rounded-full object-cover",
+            "h-8 w-8 rounded-full object-cover",
             currentRoute === item.title &&
               item.section === "settings" &&
-              " border-2 border-purple-600 w-8 h-8",
+              " border-2 border-purple-600 w-7 h-7",
           ])}
         />
       )}

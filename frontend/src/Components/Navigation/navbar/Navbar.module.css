@@ -1,8 +1,7 @@
 /* From Uiverse.io by Smit-Prajapati */
 .containerInput {
     position: relative;
-    background: linear-gradient(135deg, rgb(224, 235, 250) 0%,
-     rgb(207, 224, 244) 100%);
+    background: white;
     border-radius: 1000px;
     display: grid;
     place-content: center;
@@ -15,7 +14,7 @@
     position: relative;
     width: 100%;
     border-radius: 50px;
-    background: linear-gradient(135deg, rgb(234, 242, 250) 0%, rgb(229, 236, 244) 100%);
+    background:white;
     display: flex;
     align-items: center;
     
@@ -33,24 +32,24 @@
 .search-container::before {
     top: -1px;
     left: -1px;
-    background: linear-gradient(0deg, rgb(233, 239, 245) 0%, rgb(255, 255, 255) 100%);
+    background: linear-gradient(0deg, white, white 100%);
     z-index: -1;
 }
 
 .search-container::after {
     bottom: -1px;
     right: -1px;
-    background: linear-gradient(0deg, rgb(213, 231, 252) 0%, 
-    rgb(233, 244, 255) 100%);
+    background: linear-gradient(0deg,white 0%, 
+    white 100%);
     box-shadow: rgba(243, 243, 243, 0.702) 3px 3px 5px 0px,
-     rgba(212, 212, 212, 0.702) 5px 5px 20px 0px;
+     rgba(234, 234, 234, 0.702) 5px 5px 20px 0px;
     z-index: -2;
 }
 
 .input {
     padding: 10px; width: 100%;
-    background: linear-gradient(135deg, rgb(235, 241, 248) 0%,
-     rgb(236, 240, 245) 100%);
+    background: linear-gradient(135deg, white 0%,
+    white 100%);
     border: none;
     color: #737d86;
     font-size: 15px;
@@ -59,15 +58,16 @@
 
 .input:focus {
     outline: none;
-    background: linear-gradient(135deg, rgb(241, 245, 248) 0%,
-     rgb(230, 236, 243) 100%);
+    background: linear-gradient(135deg, rgba(227, 226, 226, 0.562) 0%,
+     rgba(247, 246, 246, 0.774) 100%);
+    color: rgba(69, 68, 70, 0.831);
+    font-weight: bold;
 }
 
 .search__icon {
     width: 40px;
- 
     aspect-ratio: 1;
-    border-left: 2px solid rgb(240, 240, 240);
+    border-left: 2px solid rgba(69, 68, 70, 0.831);
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
     border-radius: 50%;
@@ -75,12 +75,8 @@
     margin-right: 10px;
 }
 
-.search__icon:hover {
-    border-left: 3px solid white;
-}
-
 .search__icon path {
-    fill: white;
+    fill:rgba(69, 68, 70, 0.831);
 }
 
 

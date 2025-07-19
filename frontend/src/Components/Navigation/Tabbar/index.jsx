@@ -150,6 +150,8 @@ const Tabbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
                 </div>
               )}
             </div>
+
+            <hr className="border-gray-200 mb-4" />
             {/* Search Bar */}
             {searchBar && searchBar.input && (
               <div className={styles.containerInput}>
