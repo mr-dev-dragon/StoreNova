@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import styles from "./Navbar.module.css";
-
+import { MdOutlineAddCircleOutline } from "react-icons/md";
 const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
   const renderItem = (item, index) => (
     <li
@@ -18,13 +18,22 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       ])}
       onClick={() => setCurrentRoute(item.title)}
     >
-      {item.showIcon && item.icon && (
+      {item.showIcon && item.icon && item.section != "settings" && (
         <item.icon
           className={classNames([
             "text-xl",
             currentRoute === item.title &&
               item.section === "actions" &&
               "text-purple-600 drop-shadow-sm ",
+          ])}
+        />
+      )}
+
+      {item.showIcon && item.icon && item.section === "settings" && (
+        <MdOutlineAddCircleOutline
+          className={classNames([
+            "text-xl text-gray-400",
+            currentRoute === item.title && "text-purple-600 drop-shadow-sm ",
           ])}
         />
       )}
