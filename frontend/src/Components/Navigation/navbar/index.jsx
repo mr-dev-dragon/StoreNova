@@ -11,7 +11,7 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
         currentRoute === item.title && item.section === "navigation"
           ? "text-purple-600 border-b-3 border-purple-400 bg-gradient-to-b from-white to-gray-100"
           : "",
-        item.section === "actions" ? "w-17.5 " : "w-25",
+        item.section === "actions" ? "w-14 " : "w-25",
         currentRoute === item.title &&
           item.section === "logo" &&
           " text-black-500",
@@ -43,10 +43,10 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
           src={item.avatar}
           alt={item.title}
           className={classNames([
-            "h-8 w-8 rounded-full object-cover",
+            "h-9 w-9 rounded-full object-cover",
             currentRoute === item.title &&
               item.section === "settings" &&
-              " border-3 border-purple-600 w-10 h-10",
+              " border-2 border-purple-600 w-8 h-8",
           ])}
         />
       )}
@@ -55,9 +55,9 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       {item.itemCount > 0 && (
         <span
           className={classNames([
-            "ml-0.5 bg-red-300 text-white  px-0.5 py-0 rounded-full",
+            "ml-0.5  text-black  px-0.5 py-0 rounded-full",
             styles.textxxs,
-            currentRoute === item.title && "  bg-red-500",
+            currentRoute === item.title && "  text-purple-700",
           ])}
         >
           {item.itemCount}
