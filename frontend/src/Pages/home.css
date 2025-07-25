@@ -1,3 +1,7 @@
 .momo{
     height: 100vh;
 }
+
+.transition-margin-left {
+    transition: margin-left 0.7s ease-in-out;
+}

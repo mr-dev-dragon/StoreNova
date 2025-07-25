@@ -67,9 +67,6 @@
 .search__icon {
     width: 40px;
     aspect-ratio: 1;
-    border-left: 2px solid rgba(69, 68, 70, 0.831);
-    border-top: 3px solid transparent;
-    border-bottom: 3px solid transparent;
     border-radius: 50%;
     padding-left: 12px;
     margin-right: 10px;
