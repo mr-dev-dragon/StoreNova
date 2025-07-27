@@ -29,6 +29,17 @@ const getRandomSuggestions = (count = 6) => {
 };
 
 const Home = () => {
+  // inside your Home component
+  const filterConfig = {
+    title: { type: "text", label: "Title" },
+    color: { type: "color", label: "Color" },
+    star: { type: "star", label: "Rating" },
+    reviews: { type: "number", label: "Reviews" },
+    company: { type: "string", label: "Brand" },
+    category: { type: "string", label: "Category" },
+    // add any overrides or special config you want
+  };
+
   const [showFilters, setShowFilters] = useState(true);
   const { currentRoute, setCurrentRoute } = useNavigation();
 
@@ -148,6 +159,8 @@ const Home = () => {
             maxPrice={maxPrice}
             setMaxPrice={setMaxPrice}
             variants={variants}
+            config={filterConfig}
+            ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
           />
         )}
 
