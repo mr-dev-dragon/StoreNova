@@ -6,7 +6,6 @@ import Tabbar from "../Components/Navigation/Tabbar";
 import Card from "../Components/Shared/Card";
 import "./home.css";
 import { AiOutlineFilter, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import classNames from "classnames";
 import rawData from "../db/db";
 import PaginationWrapper from "../Components/Shared/PaginationWrapper";
 import FilterSidebar from "../Components/Shared/FilterSidebar";
@@ -14,7 +13,6 @@ import SortBar from "../Components/Shared/SortBar";
 
 const variants = {
   hidden: { opacity: 0, y: 20 },
-
   visible: (i) => ({
     opacity: 1,
     y: 0,
@@ -29,7 +27,6 @@ const getRandomSuggestions = (count = 6) => {
 };
 
 const Home = () => {
-  // inside your Home component
   const filterConfig = {
     title: { type: "text", label: "Title" },
     color: { type: "color", label: "Color" },
@@ -37,8 +34,19 @@ const Home = () => {
     reviews: { type: "number", label: "Reviews" },
     company: { type: "string", label: "Brand" },
     category: { type: "string", label: "Category" },
-    // add any overrides or special config you want
   };
+
+  const sortConfigOptions = [
+    { key: "newPrice", label: "Price", type: "number" },
+    { key: "star", label: "Rating", type: "number" },
+    { key: "reviews", label: "Reviews", type: "number" },
+    { key: "title", label: "Title", type: "string" },
+  ];
+
+  const [sortConfig, setSortConfig] = useState({
+    key: "newPrice",
+    order: "asc",
+  });
 
   const [showFilters, setShowFilters] = useState(true);
   const { currentRoute, setCurrentRoute } = useNavigation();
@@ -94,6 +102,7 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [showSuggestions]);
 
+  // ✅ filteredData FIRST
   const filteredData = useMemo(() => {
     try {
       return rawData
@@ -128,6 +137,25 @@ const Home = () => {
       return [];
     }
   }, [selectedFilters, minPrice, maxPrice, sortOrder, filterKeys, titleSearch]);
+
+  // ✅ sortedData AFTER filteredData
+  const sortedData = useMemo(() => {
+    if (!sortConfig.key) return filteredData;
+
+    const { key, order } = sortConfig;
+
+    return [...filteredData].sort((a, b) => {
+      let aVal = a[key];
+      let bVal = b[key];
+
+      if (typeof aVal === "string") aVal = aVal.toLowerCase();
+      if (typeof bVal === "string") bVal = bVal.toLowerCase();
+
+      if (aVal < bVal) return order === "asc" ? -1 : 1;
+      if (aVal > bVal) return order === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [filteredData, sortConfig]);
 
   return (
     <div className="bg-gray-100 h-screen">
@@ -165,11 +193,13 @@ const Home = () => {
         )}
 
         <main className="flex-1 p-4">
+          {/* SortBar using dynamic config */}
           <SortBar
-            filteredDataLength={filteredData.length}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
+            filteredDataLength={sortedData.length}
+            sortConfig={sortConfig}
+            setSortConfig={setSortConfig}
             setShowFilters={setShowFilters}
+            config={sortConfigOptions}
           />
 
           <button
@@ -183,9 +213,9 @@ const Home = () => {
             )}
           </button>
 
-          {/* Main Product List with AnimatePresence */}
+          {/* Paginated, animated product list */}
           <PaginationWrapper
-            data={filteredData}
+            data={sortedData}
             CardComponent={({ item }) => (
               <Card item={{ ...item, lazy: true }} />
             )}
