@@ -1,4 +1,3 @@
-// PaginationWrapper.jsx
 import { useState, useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -53,6 +52,7 @@ const PaginationWrapper = ({
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Items Grid */}
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <AnimatePresence mode="popLayout">
           {currentItems.map((item, i) => (
@@ -71,12 +71,13 @@ const PaginationWrapper = ({
         </AnimatePresence>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      {/* Pagination Controls Container */}
+      <div className="bg-white border border-gray-200 rounded-lg p-3 mb-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
+        {/* Items per page */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Items per page:</span>
+          <span className="text-sm text-gray-700">Items per page:</span>
           <select
-            className="px-2 py-1 rounded border text-sm"
+            className="text-sm font-medium px-3 py-1 rounded border border-gray-200 bg-white text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition"
             value={itemsPerPage}
             onChange={(e) => {
               setItemsPerPage(parseInt(e.target.value));
@@ -91,11 +92,12 @@ const PaginationWrapper = ({
           </select>
         </div>
 
+        {/* Page navigation */}
         <div className="flex items-center gap-1">
           <button
             onClick={handlePrev}
             disabled={currentPage === 1}
-            className="px-2 py-1 text-sm border rounded disabled:opacity-50"
+            className="text-sm font-medium px-3 py-1 rounded border border-gray-200 text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition disabled:opacity-50"
           >
             ←
           </button>
@@ -104,7 +106,11 @@ const PaginationWrapper = ({
               key={i}
               disabled={p === "..."}
               onClick={() => typeof p === "number" && handlePageChange(p)}
-              className={`px-2 py-1 text-sm border rounded ${p === currentPage ? "bg-blue-600 text-white" : ""}`}
+              className={`text-sm font-medium px-3 py-1 rounded border border-gray-200 transition ${
+                p === currentPage
+                  ? "bg-purple-100 text-purple-700"
+                  : "text-gray-700 hover:text-purple-600 hover:bg-purple-50"
+              }`}
             >
               {p}
             </button>
@@ -112,7 +118,7 @@ const PaginationWrapper = ({
           <button
             onClick={handleNext}
             disabled={currentPage === totalPages}
-            className="px-2 py-1 text-sm border rounded disabled:opacity-50"
+            className="text-sm font-medium px-3 py-1 rounded border border-gray-200 text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition disabled:opacity-50"
           >
             →
           </button>

@@ -8,6 +8,7 @@ import PaginationWrapper from "../Components/Shared/PaginationWrapper";
 import FilterSidebar from "../Components/Shared/FilterSidebar";
 import SortBar from "../Components/Shared/SortBar";
 import EventBlock from "../Components/Shared/EventBlock";
+import FooterBar from "../Components/footer/FooterBar";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import classNames from "classnames";
 import rawData from "../db/db";
@@ -159,7 +160,21 @@ const Home = () => {
       return 0;
     });
   }, [filteredData, sortConfig]);
+  const [links, setLinks] = useState([
+    { label: "Privacy Policy", active: false },
+    { label: "Terms of Service", active: false },
+    { label: "Contact Us", active: false },
+  ]);
 
+  const handleLinkClick = (clickedLink) => {
+    setLinks((prev) =>
+      prev.map((link) =>
+        link.label === clickedLink.label
+          ? { ...link, active: true }
+          : { ...link, active: false }
+      )
+    );
+  };
   return (
     <div className="h-screen bg-gray-100">
       <Navbar
@@ -172,36 +187,28 @@ const Home = () => {
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-      <div className="main-container flex h-full flex-col md:flex-row">
+      <div className="main-container flex  flex-col md:flex-row">
         {showFilters && (
-          <aside
-            className={classNames(
-              "fixed top-0 left-0 z-30 flex h-screen flex-col w-72 bg-white border-r border-gray-200 shadow-lg",
-              "md:relative md:z-auto md:h-auto md:w-64 lg:w-72",
-              "md:rounded-lg overflow-y-auto p-4 pt-20",
-              "transition-all duration-300 ease-in-out hover:shadow-xl"
-            )}
-          >
-            <FilterSidebar
-              showSuggestions={showSuggestions}
-              suggestionsRef={suggestionsRef}
-              suggestedItems={suggestedItems}
-              setSelectedFilters={setSelectedFilters}
-              selectedFilters={selectedFilters}
-              filterKeys={filterKeys}
-              filterValues={filterValues}
-              titleSearch={titleSearch}
-              setTitleSearch={setTitleSearch}
-              minPrice={minPrice}
-              setMinPrice={setMinPrice}
-              maxPrice={maxPrice}
-              setMaxPrice={setMaxPrice}
-              variants={animationVariants}
-              config={FILTER_CONFIG}
-              ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
-            />
-          </aside>
+          <FilterSidebar
+            showSuggestions={showSuggestions}
+            suggestionsRef={suggestionsRef}
+            suggestedItems={suggestedItems}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+            filterKeys={filterKeys}
+            filterValues={filterValues}
+            titleSearch={titleSearch}
+            setTitleSearch={setTitleSearch}
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            variants={animationVariants}
+            config={FILTER_CONFIG}
+            ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
+          />
         )}
+
         <main className="flex-1 p-4">
           <SortBar
             filteredDataLength={sortedData.length}
@@ -252,6 +259,9 @@ const Home = () => {
           />
         </main>
       </div>
+      <footer className="m-4 p-4">
+        <FooterBar links={links} onLinkClick={handleLinkClick} />
+      </footer>
     </div>
   );
 };

@@ -142,7 +142,7 @@ const FilterSidebar = ({
     config[key]?.type || detectKeyType(Object.values(filterValues), key);
 
   return (
-    <div className="space-y-6 divide-y divide-gray-200 rounded-xl bg-white p-6">
+    <div className=" bg-white border border-gray-200 rounded-lg p-3 mb-4 shadow-sm space-y-6 divide-y divide-gray-200 mt-4 ml-4 sm:w-[142px] md:w-[170px] lg:w-[227px] xl:w-[284px] 2xl:w-[340px]">
       {filteredKeys.map((key) => {
         const type = getInputType(key);
         const label = config[key]?.label || key;
@@ -150,7 +150,7 @@ const FilterSidebar = ({
 
         if (type === "color") {
           return (
-            <fieldset key={key}>
+            <fieldset key={key} className="pb-4">
               <legend className="mb-2 text-base font-semibold capitalize">
                 {label}
               </legend>
@@ -160,14 +160,13 @@ const FilterSidebar = ({
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
               />
-              <div className="h-2" />
             </fieldset>
           );
         }
 
         if (type === "text" && key === "title") {
           return (
-            <fieldset key={key}>
+            <fieldset key={key} className="pb-4">
               <legend className="mb-2 text-base font-semibold capitalize">
                 Search {label}
               </legend>
@@ -176,14 +175,13 @@ const FilterSidebar = ({
                 onChange={(e) => setTitleSearch(e.target.value)}
                 placeholder={`Search by ${label.toLowerCase()}...`}
               />
-              <div className="h-2" />
             </fieldset>
           );
         }
 
         if (type === "star") {
           return (
-            <fieldset key={key}>
+            <fieldset key={key} className="pb-4">
               <legend className="mb-2 text-base font-semibold capitalize">
                 {label}
               </legend>
@@ -193,14 +191,13 @@ const FilterSidebar = ({
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
               />
-              <div className="h-2" />
             </fieldset>
           );
         }
 
         if (type === "number" || type === "string") {
           return (
-            <fieldset key={key}>
+            <fieldset key={key} className="pb-4">
               <legend className="mb-2 text-base font-semibold capitalize">
                 {label}
               </legend>
@@ -210,7 +207,6 @@ const FilterSidebar = ({
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
               />
-              <div className="h-2" />
             </fieldset>
           );
         }
@@ -218,7 +214,7 @@ const FilterSidebar = ({
         return null;
       })}
 
-      <fieldset>
+      <fieldset className="pb-4">
         <legend className="mb-2 text-base font-semibold">Price Range</legend>
         <PriceRange
           minPrice={minPrice}
@@ -226,10 +222,9 @@ const FilterSidebar = ({
           setMinPrice={setMinPrice}
           setMaxPrice={setMaxPrice}
         />
-        <div className="h-2" />
       </fieldset>
 
-      <fieldset>
+      <fieldset className="pb-4">
         <legend className="mb-2 flex flex-row text-base font-semibold">
           events
         </legend>
@@ -243,7 +238,6 @@ const FilterSidebar = ({
           ]}
           variants={variants}
         />
-        <div className="h-2" />
       </fieldset>
     </div>
   );
