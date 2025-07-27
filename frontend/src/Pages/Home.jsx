@@ -4,15 +4,16 @@ import navigationData from "../Components/Navigation/data/navigation";
 import Navbar from "../Components/Navigation/navbar";
 import Tabbar from "../Components/Navigation/Tabbar";
 import Card from "../Components/Shared/Card";
-import "./home.css";
-import { AiOutlineFilter, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import rawData from "../db/db";
 import PaginationWrapper from "../Components/Shared/PaginationWrapper";
 import FilterSidebar from "../Components/Shared/FilterSidebar";
 import SortBar from "../Components/Shared/SortBar";
 import EventBlock from "../Components/Shared/EventBlock";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import classNames from "classnames";
-const variants = {
+import rawData from "../db/db";
+import "./home.css";
+
+const animationVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i) => ({
     opacity: 1,
@@ -22,48 +23,41 @@ const variants = {
   exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
 };
 
-const getRandomSuggestions = (count = 6) => {
-  const shuffled = [...rawData].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+const getRandomSuggestions = (count = 6) =>
+  [...rawData].sort(() => Math.random() - 0.5).slice(0, count);
+
+const FILTER_CONFIG = {
+  title: { type: "text", label: "Title" },
+  color: { type: "color", label: "Color" },
+  star: { type: "star", label: "Rating" },
+  reviews: { type: "number", label: "Reviews" },
+  company: { type: "string", label: "Brand" },
+  category: { type: "string", label: "Category" },
 };
 
-const Home = () => {
-  const filterConfig = {
-    title: { type: "text", label: "Title" },
-    color: { type: "color", label: "Color" },
-    star: { type: "star", label: "Rating" },
-    reviews: { type: "number", label: "Reviews" },
-    company: { type: "string", label: "Brand" },
-    category: { type: "string", label: "Category" },
-  };
+const SORT_OPTIONS = [
+  { key: "newPrice", label: "Price", type: "number" },
+  { key: "star", label: "Rating", type: "number" },
+  { key: "reviews", label: "Reviews", type: "number" },
+  { key: "title", label: "Title", type: "string" },
+];
 
-  const sortConfigOptions = [
-    { key: "newPrice", label: "Price", type: "number" },
-    { key: "star", label: "Rating", type: "number" },
-    { key: "reviews", label: "Reviews", type: "number" },
-    { key: "title", label: "Title", type: "string" },
-  ];
+const Home = () => {
+  const { currentRoute, setCurrentRoute } = useNavigation();
 
   const [sortConfig, setSortConfig] = useState({
     key: "newPrice",
     order: "asc",
   });
-
   const [showFilters, setShowFilters] = useState(true);
-  const { currentRoute, setCurrentRoute } = useNavigation();
-
   const [suggestedItems, setSuggestedItems] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-
   const [selectedFilters, setSelectedFilters] = useState({});
   const [titleSearch, setTitleSearch] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(Infinity);
-  const [sortOrder, setSortOrder] = useState("asc");
-
   const [filterKeys, setFilterKeys] = useState([]);
   const [filterValues, setFilterValues] = useState({});
-
   const suggestionsRef = useRef();
 
   useEffect(() => {
@@ -72,53 +66,59 @@ const Home = () => {
     );
     setFilterKeys(keys);
 
-    const valuesObj = {};
-    keys.forEach((k) => {
-      const values = rawData
-        .map((item) => item[k])
-        .filter((v) => v !== undefined && v !== null)
-        .map((v) => (typeof v === "string" ? v.toLowerCase() : v));
-      valuesObj[k] = [...new Set(values)];
-    });
-    setFilterValues(valuesObj);
+    const values = keys.reduce((acc, key) => {
+      const uniqueValues = new Set(
+        rawData
+          .map((item) => item[key])
+          .filter((v) => v !== undefined && v !== null)
+          .map((v) => (typeof v === "string" ? v.toLowerCase() : v))
+      );
+      acc[key] = Array.from(uniqueValues);
+      return acc;
+    }, {});
+    setFilterValues(values);
   }, []);
 
   useEffect(() => {
+    if (!suggestionsRef.current) return;
+
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setShowSuggestions(true);
-      },
+      ([entry]) => entry.isIntersecting && setShowSuggestions(true),
       { threshold: 0.1 }
     );
-    if (suggestionsRef.current) observer.observe(suggestionsRef.current);
+    observer.observe(suggestionsRef.current);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!showSuggestions) return;
+
     setSuggestedItems(getRandomSuggestions());
-    const interval = setInterval(() => {
-      setSuggestedItems(getRandomSuggestions());
-    }, 15000);
-    return () => clearInterval(interval);
+    const intervalId = setInterval(
+      () => setSuggestedItems(getRandomSuggestions()),
+      15000
+    );
+    return () => clearInterval(intervalId);
   }, [showSuggestions]);
 
-  // ✅ filteredData FIRST
   const filteredData = useMemo(() => {
     try {
       return rawData
         .filter((item) => {
-          if (titleSearch) {
-            const title = (item.title || "").toLowerCase();
-            if (!title.includes(titleSearch.toLowerCase())) return false;
-          }
+          if (
+            titleSearch &&
+            !(item.title?.toLowerCase() || "").includes(
+              titleSearch.toLowerCase()
+            )
+          )
+            return false;
           return filterKeys.every((key) => {
             if (key === "title") return true;
-            const val = (item[key] || "").toString().toLowerCase();
-            if (selectedFilters[key]?.length) {
-              return selectedFilters[key].includes(val);
-            }
-            return true;
+            const value = (item[key] || "").toString().toLowerCase();
+            return (
+              !selectedFilters[key]?.length ||
+              selectedFilters[key].includes(value)
+            );
           });
         })
         .filter((item) => {
@@ -131,27 +131,29 @@ const Home = () => {
         .sort((a, b) => {
           const aPrice = parseFloat(a.newPrice) || 0;
           const bPrice = parseFloat(b.newPrice) || 0;
-          return sortOrder === "asc" ? aPrice - bPrice : bPrice - aPrice;
+          return sortConfig.order === "asc" ? aPrice - bPrice : bPrice - aPrice;
         });
-    } catch (err) {
-      console.error("filteredData error:", err);
+    } catch {
       return [];
     }
-  }, [selectedFilters, minPrice, maxPrice, sortOrder, filterKeys, titleSearch]);
+  }, [
+    selectedFilters,
+    minPrice,
+    maxPrice,
+    sortConfig.order,
+    filterKeys,
+    titleSearch,
+    sortConfig,
+  ]);
 
-  // ✅ sortedData AFTER filteredData
   const sortedData = useMemo(() => {
-    if (!sortConfig.key) return filteredData;
-
     const { key, order } = sortConfig;
-
+    if (!key) return filteredData;
     return [...filteredData].sort((a, b) => {
       let aVal = a[key];
       let bVal = b[key];
-
       if (typeof aVal === "string") aVal = aVal.toLowerCase();
       if (typeof bVal === "string") bVal = bVal.toLowerCase();
-
       if (aVal < bVal) return order === "asc" ? -1 : 1;
       if (aVal > bVal) return order === "asc" ? 1 : -1;
       return 0;
@@ -159,7 +161,7 @@ const Home = () => {
   }, [filteredData, sortConfig]);
 
   return (
-    <div className="bg-gray-100 h-screen">
+    <div className="h-screen bg-gray-100">
       <Navbar
         navigationData={navigationData}
         currentRoute={currentRoute}
@@ -170,32 +172,15 @@ const Home = () => {
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
-
-      <div className="main-container flex flex-col md:flex-row h-full">
+      <div className="main-container flex h-full flex-col md:flex-row">
         {showFilters && (
           <aside
-            className={classNames([
-              // Positioning
-              "fixed md:relative top-0 left-0 z-30 md:z-auto",
-
-              // Full height
-              "h-screen md:h-auto",
-
-              // Width
-              "w-72 md:w-64 lg:w-72",
-
-              // Style
-              "bg-white border-r border-gray-200 shadow-lg rounded-none md:rounded-lg",
-
-              // Padding & scroll
-              "p-4 overflow-y-auto",
-
-              // Transition
-              "transition-all duration-300 ease-in-out",
-
-              // Hover effect
-              "hover:shadow-xl",
-            ])}
+            className={classNames(
+              "fixed top-0 left-0 z-30 flex h-screen flex-col w-72 bg-white border-r border-gray-200 shadow-lg",
+              "md:relative md:z-auto md:h-auto md:w-64 lg:w-72",
+              "md:rounded-lg overflow-y-auto p-4 pt-20",
+              "transition-all duration-300 ease-in-out hover:shadow-xl"
+            )}
           >
             <FilterSidebar
               showSuggestions={showSuggestions}
@@ -211,25 +196,24 @@ const Home = () => {
               setMinPrice={setMinPrice}
               maxPrice={maxPrice}
               setMaxPrice={setMaxPrice}
-              variants={variants}
-              config={filterConfig}
+              variants={animationVariants}
+              config={FILTER_CONFIG}
               ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
             />
           </aside>
         )}
-
         <main className="flex-1 p-4">
-          {/* SortBar using dynamic config */}
           <SortBar
             filteredDataLength={sortedData.length}
             sortConfig={sortConfig}
             setSortConfig={setSortConfig}
             setShowFilters={setShowFilters}
-            config={sortConfigOptions}
+            config={SORT_OPTIONS}
           />
           <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="fixed bottom-4 right-4 z-30 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition"
+            onClick={() => setShowFilters((prev) => !prev)}
+            className="fixed bottom-4 right-4 z-30 rounded-full bg-purple-600 p-2 text-white shadow-lg transition hover:bg-purple-700"
+            aria-label={showFilters ? "Close filters" : "Open filters"}
           >
             {showFilters ? (
               <AiOutlineClose size={20} />
@@ -237,15 +221,13 @@ const Home = () => {
               <AiOutlineMenu size={20} />
             )}
           </button>
-          {/* Paginated, animated product list */}
           <PaginationWrapper
             data={sortedData}
             CardComponent={({ item }) => (
               <Card item={{ ...item, lazy: true }} />
             )}
-            variants={variants}
+            variants={animationVariants}
           />
-
           <EventBlock
             type="trending"
             layout="row"
@@ -254,7 +236,7 @@ const Home = () => {
               { name: "Summer Deals" },
               { name: "Top Rated Watches" },
             ]}
-            variants={variants}
+            variants={animationVariants}
           />
           <EventBlock
             type="promo"
@@ -266,7 +248,7 @@ const Home = () => {
               },
               { title: "Free Shipping", description: "On orders over $100." },
             ]}
-            variants={variants}
+            variants={animationVariants}
           />
         </main>
       </div>
