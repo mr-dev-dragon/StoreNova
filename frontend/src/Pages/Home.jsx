@@ -10,7 +10,8 @@ import rawData from "../db/db";
 import PaginationWrapper from "../Components/Shared/PaginationWrapper";
 import FilterSidebar from "../Components/Shared/FilterSidebar";
 import SortBar from "../Components/Shared/SortBar";
-
+import EventBlock from "../Components/Shared/EventBlock";
+import classNames from "classnames";
 const variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i) => ({
@@ -172,24 +173,49 @@ const Home = () => {
 
       <div className="main-container flex flex-col md:flex-row h-full">
         {showFilters && (
-          <FilterSidebar
-            showSuggestions={showSuggestions}
-            suggestionsRef={suggestionsRef}
-            suggestedItems={suggestedItems}
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-            filterKeys={filterKeys}
-            filterValues={filterValues}
-            titleSearch={titleSearch}
-            setTitleSearch={setTitleSearch}
-            minPrice={minPrice}
-            setMinPrice={setMinPrice}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            variants={variants}
-            config={filterConfig}
-            ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
-          />
+          <aside
+            className={classNames([
+              // Positioning
+              "fixed md:relative top-0 left-0 z-30 md:z-auto",
+
+              // Full height
+              "h-screen md:h-auto",
+
+              // Width
+              "w-72 md:w-64 lg:w-72",
+
+              // Style
+              "bg-white border-r border-gray-200 shadow-lg rounded-none md:rounded-lg",
+
+              // Padding & scroll
+              "p-4 overflow-y-auto",
+
+              // Transition
+              "transition-all duration-300 ease-in-out",
+
+              // Hover effect
+              "hover:shadow-xl",
+            ])}
+          >
+            <FilterSidebar
+              showSuggestions={showSuggestions}
+              suggestionsRef={suggestionsRef}
+              suggestedItems={suggestedItems}
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
+              filterKeys={filterKeys}
+              filterValues={filterValues}
+              titleSearch={titleSearch}
+              setTitleSearch={setTitleSearch}
+              minPrice={minPrice}
+              setMinPrice={setMinPrice}
+              maxPrice={maxPrice}
+              setMaxPrice={setMaxPrice}
+              variants={variants}
+              config={filterConfig}
+              ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
+            />
+          </aside>
         )}
 
         <main className="flex-1 p-4">
@@ -201,7 +227,6 @@ const Home = () => {
             setShowFilters={setShowFilters}
             config={sortConfigOptions}
           />
-
           <button
             onClick={() => setShowFilters(!showFilters)}
             className="fixed bottom-4 right-4 z-30 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition"
@@ -212,13 +237,35 @@ const Home = () => {
               <AiOutlineMenu size={20} />
             )}
           </button>
-
           {/* Paginated, animated product list */}
           <PaginationWrapper
             data={sortedData}
             CardComponent={({ item }) => (
               <Card item={{ ...item, lazy: true }} />
             )}
+            variants={variants}
+          />
+
+          <EventBlock
+            type="trending"
+            layout="row"
+            data={[
+              { name: "Porsche 911 Accessories" },
+              { name: "Summer Deals" },
+              { name: "Top Rated Watches" },
+            ]}
+            variants={variants}
+          />
+          <EventBlock
+            type="promo"
+            layout="row"
+            data={[
+              {
+                title: "Big Sale!",
+                description: "Up to 50% off on select items.",
+              },
+              { title: "Free Shipping", description: "On orders over $100." },
+            ]}
             variants={variants}
           />
         </main>
