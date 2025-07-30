@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 const FooterBar = ({ links = [], onLinkClick }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-3 mb-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
+    <div className="bg-white border border-gray-200  border-l-0 border-r-0 p-3 mb-4 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
       {/* Left Section */}
       <p className="text-sm text-gray-700">
         © {new Date().getFullYear()} Your Company. All rights reserved.

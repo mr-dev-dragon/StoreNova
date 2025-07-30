@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import useNavigation from "../Components/Navigation/hook/useNavigation";
-import navigationData from "../Components/Navigation/data/navigation";
+import getNavConfig from "../Components/Navigation/data/getNavConfig";
 import Navbar from "../Components/Navigation/navbar";
 import Tabbar from "../Components/Navigation/Tabbar";
 import Card from "../Components/Shared/Card";
@@ -95,12 +95,12 @@ const test = () => {
   return (
     <div className="bg-gray-100 h-screen">
       <Navbar
-        navigationData={navigationData}
+        getNavConfig={getNavConfig}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
       <Tabbar
-        navigationData={navigationData}
+        getNavConfig={getNavConfig}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />

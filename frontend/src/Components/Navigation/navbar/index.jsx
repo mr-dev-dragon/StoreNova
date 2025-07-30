@@ -1,217 +1,150 @@
-// import React from "react";
-// import classNames from "classnames";
-// import styles from "./Navbar.module.css";
-// import { MdOutlineAddCircleOutline } from "react-icons/md";
-// const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
-//   const renderItem = (item, index) => (
-//     <li
-//       key={index}
-//       className={classNames([
-//         "text-black-500  cursor-pointer font-medium tracking-wide text-md flex items-center justify-center gap-1 px-2",
-//         currentRoute === item.title && item.section === "navigation"
-//           ? "text-purple-600   border-purple-400  from-white "
-//           : "",
-//         item.section === "actions" ? "w-14 " : "w-25",
-//         currentRoute === item.title &&
-//           item.section === "logo" &&
-//           " text-black-500",
-//       ])}
-//       onClick={() => setCurrentRoute(item.title)}
-//     >
-//       {item.showIcon && item.icon && item.section != "settings" && (
-//         <item.icon
-//           className={classNames([
-//             "text-xl",
-//             currentRoute === item.title &&
-//               item.section === "actions" &&
-//               "text-purple-600 drop-shadow-sm ",
-//           ])}
-//         />
-//       )}
-
-//       {item.showIcon && item.icon && item.section === "settings" && (
-//         <MdOutlineAddCircleOutline
-//           className={classNames([
-//             "text-xl text-gray-400",
-//             currentRoute === item.title && "text-purple-600 drop-shadow-sm ",
-//           ])}
-//         />
-//       )}
-
-//       {item.avatar && (
-//         <img
-//           src={item.avatar}
-//           alt={item.title}
-//           className={classNames([
-//             "h-8 w-8 rounded-full object-cover",
-//             currentRoute === item.title &&
-//               item.section === "settings" &&
-//               " border-2 border-purple-600 w-7 h-7",
-//           ])}
-//         />
-//       )}
-//       {/* {item.title === "settings" && <item.icon className={classNames([""])} />} */}
-//       {item.showTitle && <span className="leading-none">{item.title}</span>}
-//       {item.itemCount > 0 && (
-//         <span
-//           className={classNames([
-//             "ml-0.5  text-black  px-0.5 py-0 rounded-full",
-//             styles.textxxs,
-//             currentRoute === item.title && "  text-purple-700",
-//           ])}
-//         >
-//           {item.itemCount}
-//         </span>
-//       )}
-//     </li>
-//   );
-
-//   const searchBar = navigationData.find((item) => item.section === "search");
-
-//   const sections = {
-//     logo: navigationData.filter((item) => item.section === "logo"),
-//     navigation: navigationData.filter((item) => item.section === "navigation"),
-//     actions: navigationData.filter((item) => item.section === "actions"),
-//     settings: navigationData.filter((item) => item.section === "settings"),
-//   };
-
-//   return (
-//     <nav className="hidden md:flex flex-row items-center justify-between px-8 h-18 bg-white w-full">
-//       {/* LOGO */}
-//       <ul className="flex flex-row  h-12">{sections.logo.map(renderItem)}</ul>
-
-//       {/* SEARCH */}
-//       <ul className="flex flex-row  h-8">
-//         {searchBar && searchBar.input && (
-//           <li className={styles.containerInput}>
-//             <div className={styles["search-container"]}>
-//               <input
-//                 type="text"
-//                 className={styles.input}
-//                 placeholder={searchBar.placeholder}
-//                 onKeyDown={(e) => {
-//                   if (e.key === "Enter") {
-//                     window.location.href = searchBar.action || "/search";
-//                   }
-//                 }}
-//               />
-//               <svg viewBox="0 0 24 24" className={styles.search__icon}>
-//                 <g>
-//                   <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z" />
-//                 </g>
-//               </svg>
-//             </div>
-//           </li>
-//         )}
-//       </ul>
-
-//       {/* NAVIGATION */}
-//       <ul className="flex flex-row  h-8">
-//         {sections.navigation.map(renderItem)}
-//       </ul>
-
-//       {/* ACTIONS */}
-//       <ul className="flex flex-row  h-8">{sections.actions.map(renderItem)}</ul>
-
-//       {/* SETTINGS */}
-//       <ul className="flex flex-row  h-8">
-//         {sections.settings.map(renderItem)}
-//       </ul>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
-import React from "react";
+import { useFavorites } from "../../../servers/context/FavoritesContext";
+import Card from "../../Shared/Card";
 import classNames from "classnames";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { MdOutlineAddCircleOutline } from "react-icons/md";
+import DropdownCardList from "../navbar/DropdownCardList";
 
-const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
-  const renderItem = (item, index) => (
-    <li
-      key={index}
-      className={classNames(
-        "cursor-pointer font-medium tracking-wide text-sm flex items-center justify-center gap-1 px-3 py-1 rounded transition",
-        currentRoute === item.title && item.section === "navigation"
-          ? "text-purple-700 border border-purple-400 bg-purple-100"
-          : "text-gray-700 hover:text-purple-600 hover:bg-purple-50 border border-transparent",
-        item.section === "actions" ? "w-14" : "w-25",
-        currentRoute === item.title && item.section === "logo" && "text-black"
-      )}
-      onClick={() => setCurrentRoute(item.title)}
-    >
-      {item.showIcon && item.icon && item.section !== "settings" && (
-        <item.icon
-          className={classNames(
-            "text-xl",
-            currentRoute === item.title &&
-              item.section === "actions" &&
-              "text-purple-600 drop-shadow-sm"
-          )}
-        />
-      )}
+const Navbar = ({ getNavConfig, currentRoute, setCurrentRoute }) => {
+  const { state, dispatch } = useFavorites();
+  const [openIndex, setOpenIndex] = useState(null);
 
-      {item.showIcon && item.icon && item.section === "settings" && (
-        <MdOutlineAddCircleOutline
-          className={classNames(
-            "text-xl text-gray-400",
-            currentRoute === item.title && "text-purple-600 drop-shadow-sm"
-          )}
-        />
-      )}
-
-      {item.avatar && (
-        <img
-          src={item.avatar}
-          alt={item.title}
-          className={classNames(
-            "h-8 w-8 rounded-full object-cover",
-            currentRoute === item.title &&
-              item.section === "settings" &&
-              "border-2 border-purple-600 w-7 h-7"
-          )}
-        />
-      )}
-
-      {item.showTitle && <span className="leading-none">{item.title}</span>}
-
-      {item.itemCount > 0 && (
-        <span
-          className={classNames(
-            "ml-0.5 text-xs px-1 py-0 rounded-full",
-            currentRoute === item.title ? "text-purple-700" : "text-black"
-          )}
-        >
-          {item.itemCount}
-        </span>
-      )}
-    </li>
+  const handleClickOutside = useCallback(
+    (e) => {
+      if (
+        openIndex !== null &&
+        !document
+          .querySelector(`[data-li-index="${openIndex}"]`)
+          ?.contains(e.target) &&
+        !document
+          .querySelector(`[data-dropdown-index="${openIndex}"]`)
+          ?.contains(e.target)
+      ) {
+        setOpenIndex(null);
+      }
+    },
+    [openIndex]
   );
 
-  const searchBar = navigationData.find((item) => item.section === "search");
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [handleClickOutside]);
 
-  const sections = {
-    logo: navigationData.filter((item) => item.section === "logo"),
-    navigation: navigationData.filter((item) => item.section === "navigation"),
-    actions: navigationData.filter((item) => item.section === "actions"),
-    settings: navigationData.filter((item) => item.section === "settings"),
+  const renderItem = (item, index) => {
+    const isActive = currentRoute === item.title;
+    const isOpen = openIndex === index;
+    const dropdownItems = Array.isArray(item.dropdown) ? item.dropdown : [];
+
+    const onItemClicked = (e) => {
+      e.stopPropagation();
+      if (item.section === "actions" && dropdownItems.length > 0) {
+        setOpenIndex(isOpen ? null : index);
+      } else {
+        setOpenIndex(null);
+      }
+      setCurrentRoute(item.title);
+    };
+
+    return (
+      <li
+        key={item.id || index}
+        data-li-index={index}
+        onClick={onItemClicked}
+        className={classNames(
+          "relative font-medium tracking-wide text-sm flex items-center justify-center gap-1 px-3 py-1 rounded transition cursor-pointer select-none",
+          isActive && item.section === "navigation"
+            ? "text-purple-united-1 border border-purple-400 bg-purple-100"
+            : "text-gray-700 hover:text-purple-600 hover:bg-purple-50 border border-transparent",
+          item.section === "actions" ? "w-14" : "w-25",
+          isActive && item.section === "logo" && "text-black"
+        )}
+      >
+        {item.showIcon && item.icon && item.section !== "settings" && (
+          <div className="relative flex items-center justify-center">
+            <item.icon
+              className={classNames(
+                "text-xl",
+                isActive &&
+                  item.section === "actions" &&
+                  "text-purple-united-1 drop-shadow-sm"
+              )}
+            />
+            {item.itemCount > 0 && (
+              <span
+                className={classNames(
+                  "absolute -top-2 -right-2 text-xs px-1 py-0.5 rounded-full bg-white border",
+                  isActive
+                    ? "text-purple-united-1 border-purple-united-1"
+                    : "text-black"
+                )}
+              >
+                {item.itemCount}
+              </span>
+            )}
+          </div>
+        )}
+
+        {item.showIcon && item.icon && item.section === "settings" && (
+          <MdOutlineAddCircleOutline
+            className={classNames(
+              "text-xl text-gray-400",
+              isActive && "text-purple-united-1 drop-shadow-sm"
+            )}
+          />
+        )}
+
+        {item.avatar && (
+          <img
+            src={item.avatar}
+            alt={item.title}
+            className={classNames(
+              "h-8 w-8 rounded-full object-cover",
+              isActive &&
+                item.section === "settings" &&
+                "border-2 border-purple-united-1 w-7 h-7"
+            )}
+          />
+        )}
+
+        {item.showTitle && <span className="leading-none">{item.title}</span>}
+
+        {isOpen && item.section === "actions" && dropdownItems.length > 0 && (
+          <div
+            data-dropdown-index={index}
+            className="absolute top-full mt-2 z-50 w-80 max-h-[384px] overflow-y-auto rounded-lg bg-white p-2 shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <DropdownCardList
+              items={item.dropdown}
+              type={item.title.toLowerCase()}
+              dispatch={dispatch}
+            />
+          </div>
+        )}
+      </li>
+    );
+  };
+
+  const searchBar = getNavConfig.find((i) => i.section === "search");
+
+  const grouped = {
+    logo: getNavConfig.filter((i) => i.section === "logo"),
+    navigation: getNavConfig.filter((i) => i.section === "navigation"),
+    actions: getNavConfig.filter((i) => i.section === "actions"),
+    settings: getNavConfig.filter((i) => i.section === "settings"),
   };
 
   return (
     <nav className="hidden md:flex items-center justify-between px-8 h-16 bg-white w-full border border-gray-200 rounded-lg shadow-sm">
-      {/* LOGO */}
-      <ul className="flex items-center h-12">
-        {sections.logo.map(renderItem)}
-      </ul>
+      <ul className="flex items-center h-12">{grouped.logo.map(renderItem)}</ul>
 
-      {/* SEARCH */}
       <ul className="flex items-center h-8">
-        {searchBar && searchBar.input && (
+        {searchBar?.input && (
           <li className="relative">
             <input
               type="text"
-              className="rounded   px-4 py-1.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-purple-300 p-2"
+              className="rounded px-4 py-1.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-purple-300 p-2"
               placeholder={searchBar.placeholder}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -229,19 +162,14 @@ const Navbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
         )}
       </ul>
 
-      {/* NAVIGATION */}
       <ul className="flex items-center h-8">
-        {sections.navigation.map(renderItem)}
+        {grouped.navigation.map(renderItem)}
       </ul>
-
-      {/* ACTIONS */}
       <ul className="flex items-center h-8">
-        {sections.actions.map(renderItem)}
+        {grouped.actions.map(renderItem)}
       </ul>
-
-      {/* SETTINGS */}
       <ul className="flex items-center h-8">
-        {sections.settings.map(renderItem)}
+        {grouped.settings.map(renderItem)}
       </ul>
     </nav>
   );

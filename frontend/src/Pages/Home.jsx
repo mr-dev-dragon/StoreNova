@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import useNavigation from "../Components/Navigation/hook/useNavigation";
-import navigationData from "../Components/Navigation/data/navigation";
+import getNavConfig from "../Components/Navigation/data/getNavConfig";
 import Navbar from "../Components/Navigation/navbar";
 import Tabbar from "../Components/Navigation/Tabbar";
 import Card from "../Components/Shared/Card";
@@ -13,6 +13,7 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import classNames from "classnames";
 import rawData from "../db/db";
 import "./home.css";
+import { useFavorites } from "../servers/context/FavoritesContext";
 
 const animationVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -44,8 +45,9 @@ const SORT_OPTIONS = [
 ];
 
 const Home = () => {
+  const { state } = useFavorites();
+  const navData = getNavConfig(state);
   const { currentRoute, setCurrentRoute } = useNavigation();
-
   const [sortConfig, setSortConfig] = useState({
     key: "newPrice",
     order: "asc",
@@ -178,12 +180,12 @@ const Home = () => {
   return (
     <div className="h-screen bg-gray-100">
       <Navbar
-        navigationData={navigationData}
+        getNavConfig={navData}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
       <Tabbar
-        navigationData={navigationData}
+        getNavConfig={navData}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
@@ -259,7 +261,7 @@ const Home = () => {
           />
         </main>
       </div>
-      <footer className="m-4 p-4">
+      <footer className="pt-4 pb-4">
         <FooterBar links={links} onLinkClick={handleLinkClick} />
       </footer>
     </div>

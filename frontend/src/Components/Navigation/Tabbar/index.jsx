@@ -15,7 +15,7 @@ import {
   FiInfo,
 } from "react-icons/fi";
 
-const Tabbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
+const Tabbar = ({ getNavConfig, currentRoute, setCurrentRoute }) => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const fixedTabItems = ["Home", "Discover", "Cart", "Favorites"];
@@ -45,27 +45,25 @@ const Tabbar = ({ navigationData, currentRoute, setCurrentRoute }) => {
       icon: FiInfo,
     },
   ];
-  const tabItems = navigationData.filter(
+  const tabItems = getNavConfig.filter(
     (item) =>
       item.section === "navigation" ||
       (item.section === "actions" && fixedTabItems.includes(item.title))
   );
 
-  const logo = navigationData.find((item) => item.section === "logo");
-  const searchBar = navigationData.find((item) => item.section === "search");
-  const navigationItems = navigationData.filter(
+  const logo = getNavConfig.find((item) => item.section === "logo");
+  const searchBar = getNavConfig.find((item) => item.section === "search");
+  const navigationItems = getNavConfig.filter(
     (item) => item.section === "navigation"
   );
-  const actionItems = navigationData.filter(
-    (item) => item.section === "actions"
-  );
-  const settingItems = navigationData.filter(
+  const actionItems = getNavConfig.filter((item) => item.section === "actions");
+  const settingItems = getNavConfig.filter(
     (item) => item.section === "settings"
   );
-  const profile = navigationData.find(
+  const profile = getNavConfig.find(
     (item) => item.section === "settings" && item.title === "Profile"
   );
-  const settings = navigationData.find(
+  const settings = getNavConfig.find(
     (item) => item.section === "settings" && item.title === "Profile"
   );
 

@@ -3,10 +3,11 @@ import {
   FaInbox, FaHeart, FaShoppingCart,
   FaUserCircle, FaUser, FaCog, FaSignOutAlt
 } from "react-icons/fa";
-import { MdOutlineMoreHoriz } from 'react-icons/md';
 import { AiFillSetting } from 'react-icons/ai';
 import amgAvatar from "./avatar.png";
-export default [
+import { useFavorites } from "../../../servers/context/FavoritesContext";
+
+const getNavConfig = (state) => [
   {
     section: "logo",
     title: "MyApp",
@@ -76,8 +77,8 @@ export default [
     showTitle: false,
     showIcon: true,
     route: "/favorites",
-    itemCount: 12,
-    dropdown: [],
+    itemCount: state?.favorites?.length || 0,
+    dropdown: state?.favorites || [],
   },
   {
     section: "actions",
@@ -86,14 +87,14 @@ export default [
     showTitle: false,
     showIcon: true,
     route: "/cart",
-    itemCount: 32,
-    dropdown: [],
+    itemCount: state?.cart?.length || 0,
+    dropdown: state?.cart || [],
   },
   {
     section: "settings",
     title: "Profile",
-     avatar: amgAvatar,
-    icon: AiFillSetting  ,
+    avatar: amgAvatar,
+    icon: AiFillSetting,
     showTitle: false,
     showIcon: true,
     route: "/profile",
@@ -123,3 +124,6 @@ export default [
     ],
   },
 ];
+
+export default getNavConfig;
+

@@ -3,7 +3,7 @@ import Recommended from "../Components/Recommended/Recommended";
 import { FaDev } from "react-icons/fa";
 
 import useNavigation from "../Components/Navigation/hook/useNavigation";
-import navigationData from "../Components/Navigation/data/navigation";
+import getNavConfig from "../Components/Navigation/data/navigation";
 import Navbar from "../Components/Navigation/navbar";
 import Tabbar from "../Components/Navigation/Tabbar";
 
@@ -13,12 +13,12 @@ const NavDemo = () => {
   return (
     <div className={"bg-gray-200 h-screen;"}>
       <Navbar
-        navigationData={navigationData}
+        getNavConfig={getNavConfig}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
       <Tabbar
-        navigationData={navigationData}
+        getNavConfig={getNavConfig}
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
       />
