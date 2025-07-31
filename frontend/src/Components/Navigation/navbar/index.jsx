@@ -112,7 +112,7 @@ const Navbar = ({ getNavConfig, currentRoute, setCurrentRoute }) => {
         {isOpen && item.section === "actions" && dropdownItems.length > 0 && (
           <div
             data-dropdown-index={index}
-            className="absolute top-full mt-2 z-50 w-80 max-h-[384px] overflow-y-auto rounded-lg bg-white p-2 shadow-lg"
+            className="absolute top-full z-50 w-80 max-h-[384px] overflow-y-auto rounded-lg bg-white p-2 shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <DropdownCardList
