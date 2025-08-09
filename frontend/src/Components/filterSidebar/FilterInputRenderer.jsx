@@ -1,8 +1,8 @@
 import React from "react";
-import StarInput from "./StarInput";
-import CheckboxGroup from "./CheckboxGroup";
-import ColorSelector from "./ColorSelector";
-import SearchInput from "./SearchInput";
+import StarInput from "../common/input/StarInput";
+import CheckboxGroup from "../common/input/CheckboxGroup";
+import ColorSelector from "../common/input/ColorSelector";
+import SearchInput from "../common/input/SearchInput";
 
 const FilterInputRenderer = ({
   type,

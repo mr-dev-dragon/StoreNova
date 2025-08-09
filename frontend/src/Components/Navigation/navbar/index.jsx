@@ -1,5 +1,5 @@
-import { useFavorites } from "../../../servers/context/FavoritesContext";
-import Card from "../../Shared/Card";
+import { useFavorites } from "../../../context/FavoritesContext";
+import Card from "../../common/Card";
 import classNames from "classnames";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { MdOutlineAddCircleOutline } from "react-icons/md";

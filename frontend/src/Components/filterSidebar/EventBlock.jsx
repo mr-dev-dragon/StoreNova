@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import classNames from "classnames";
-import Card from "./Card";
+import Card from "../common/Card";
 
 const EventBlock = ({ type, layout = "sidebar", data = [], variants }) => {
   const wrapperClasses = classNames(

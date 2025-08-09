@@ -3,16 +3,16 @@ import useNavigation from "../Components/Navigation/hook/useNavigation";
 import getNavConfig from "../Components/Navigation/data/getNavConfig";
 import Navbar from "../Components/Navigation/navbar";
 import Tabbar from "../Components/Navigation/Tabbar";
-import Card from "../Components/Shared/Card";
-import PaginationWrapper from "../Components/Shared/PaginationWrapper";
-import FilterSidebar from "../Components/Shared/FilterSidebar";
-import SortBar from "../Components/Shared/SortBar";
-import EventBlock from "../Components/Shared/EventBlock";
+import Card from "../Components/common/Card";
+import PaginationWrapper from "../Components/common/PaginationWrapper";
+import FilterSidebar from "../Components/filterSidebar/FilterSidebar";
+import SortBar from "../Components/common/SortBar";
+import EventBlock from "../Components/filterSidebar/EventBlock";
 import FooterBar from "../Components/footer/FooterBar";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import rawData from "../db/db";
 import "./home.css";
-import { useFavorites } from "../servers/context/FavoritesContext";
+import { useFavorites } from "../context/FavoritesContext";
 
 // Star filtering helper — checks for star range including halves
 function filterByStar(data, filterStarValue) {

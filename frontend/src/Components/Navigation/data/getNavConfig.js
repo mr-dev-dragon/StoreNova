@@ -5,7 +5,7 @@ import {
 } from "react-icons/fa";
 import { AiFillSetting } from 'react-icons/ai';
 import amgAvatar from "./avatar.png";
-import { useFavorites } from "../../../servers/context/FavoritesContext";
+import { useFavorites } from "../../../context/FavoritesContext";
 
 const getNavConfig = (state) => [
   {

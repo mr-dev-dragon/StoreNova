@@ -1,4 +1,4 @@
-import { useFavorites } from "../../servers/context/FavoritesContext";
+import { useFavorites } from "../../context/FavoritesContext";
 import { AiFillStar } from "react-icons/ai";
 
 import classNames from "classnames";

@@ -1,9 +1,9 @@
 import React from "react";
-import FilterSection from "./input/FilterSection";
-import FilterInputRenderer from "./input/FilterInputRenderer";
-import SuggestionsBlock from "./input/SuggestionsBlock";
-import PriceRangeInput from "./input/PriceRangeInput";
-import EventsBlockWrapper from "./input/EventsBlockWrapper";
+import FilterSection from "./FilterSection";
+import FilterInputRenderer from "./FilterInputRenderer";
+import SuggestionsBlock from "./SuggestionsBlock";
+import PriceRangeInput from "../common/input/PriceRangeInput";
+import EventsBlockWrapper from "./EventsBlockWrapper";
 
 const detectKeyType = (data, key) => {
   const sample = data.find((item) => item[key] !== undefined)?.[key];

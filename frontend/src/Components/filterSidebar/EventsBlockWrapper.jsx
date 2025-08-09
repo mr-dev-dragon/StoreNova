@@ -1,5 +1,5 @@
 import React from "react";
-import EventBlock from "../EventBlock"; // Adjust path as needed
+import EventBlock from "./EventBlock"; // Adjust path as needed
 
 const EventsBlockWrapper = ({ data, variants }) => {
   return (
