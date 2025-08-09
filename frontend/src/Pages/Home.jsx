@@ -10,10 +10,20 @@ import SortBar from "../Components/Shared/SortBar";
 import EventBlock from "../Components/Shared/EventBlock";
 import FooterBar from "../Components/footer/FooterBar";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import classNames from "classnames";
 import rawData from "../db/db";
 import "./home.css";
 import { useFavorites } from "../servers/context/FavoritesContext";
+
+// Star filtering helper — checks for star range including halves
+function filterByStar(data, filterStarValue) {
+  if (!filterStarValue) return data;
+
+  return data.filter((item) => {
+    const star = parseFloat(item.star) || 0;
+    // Accept items with star rating >= filterStarValue - 0.5 and <= filterStarValue + 0.5
+    return star >= filterStarValue - 0.5 && star <= filterStarValue + 0.5;
+  });
+}
 
 const animationVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -48,6 +58,7 @@ const Home = () => {
   const { state } = useFavorites();
   const navData = getNavConfig(state);
   const { currentRoute, setCurrentRoute } = useNavigation();
+
   const [sortConfig, setSortConfig] = useState({
     key: "newPrice",
     order: "asc",
@@ -104,10 +115,12 @@ const Home = () => {
     return () => clearInterval(intervalId);
   }, [showSuggestions]);
 
+  // First filter raw data by search and filters except star & price
   const filteredData = useMemo(() => {
     try {
       return rawData
         .filter((item) => {
+          // Title search
           if (
             titleSearch &&
             !(item.title?.toLowerCase() || "").includes(
@@ -115,8 +128,10 @@ const Home = () => {
             )
           )
             return false;
+
+          // Other filters except star
           return filterKeys.every((key) => {
-            if (key === "title") return true;
+            if (key === "title" || key === "star") return true;
             const value = (item[key] || "").toString().toLowerCase();
             return (
               !selectedFilters[key]?.length ||
@@ -125,34 +140,29 @@ const Home = () => {
           });
         })
         .filter((item) => {
+          // Price filter
           const price = parseFloat(item.newPrice) || 0;
           return (
             price >= minPrice &&
             price <= (maxPrice === Infinity ? price : maxPrice)
           );
-        })
-        .sort((a, b) => {
-          const aPrice = parseFloat(a.newPrice) || 0;
-          const bPrice = parseFloat(b.newPrice) || 0;
-          return sortConfig.order === "asc" ? aPrice - bPrice : bPrice - aPrice;
         });
     } catch {
       return [];
     }
-  }, [
-    selectedFilters,
-    minPrice,
-    maxPrice,
-    sortConfig.order,
-    filterKeys,
-    titleSearch,
-    sortConfig,
-  ]);
+  }, [selectedFilters, minPrice, maxPrice, filterKeys, titleSearch]);
 
+  // Then apply star filter on the filtered data
+  const filteredByStar = useMemo(() => {
+    const starFilterValue = selectedFilters.star || 0;
+    return filterByStar(filteredData, starFilterValue);
+  }, [filteredData, selectedFilters.star]);
+
+  // Finally apply sorting on filtered + star filtered data
   const sortedData = useMemo(() => {
     const { key, order } = sortConfig;
-    if (!key) return filteredData;
-    return [...filteredData].sort((a, b) => {
+    if (!key) return filteredByStar;
+    return [...filteredByStar].sort((a, b) => {
       let aVal = a[key];
       let bVal = b[key];
       if (typeof aVal === "string") aVal = aVal.toLowerCase();
@@ -161,7 +171,8 @@ const Home = () => {
       if (aVal > bVal) return order === "asc" ? 1 : -1;
       return 0;
     });
-  }, [filteredData, sortConfig]);
+  }, [filteredByStar, sortConfig]);
+
   const [links, setLinks] = useState([
     { label: "Privacy Policy", active: false },
     { label: "Terms of Service", active: false },
@@ -177,6 +188,7 @@ const Home = () => {
       )
     );
   };
+
   return (
     <div className="h-screen bg-gray-100">
       <Navbar

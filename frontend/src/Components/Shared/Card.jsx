@@ -1,5 +1,6 @@
 import { useFavorites } from "../../servers/context/FavoritesContext";
 import { AiFillStar } from "react-icons/ai";
+
 import classNames from "classnames";
 
 function Card({ item, classNameToPass, row = false, listType = "default" }) {
@@ -125,7 +126,7 @@ function Card({ item, classNameToPass, row = false, listType = "default" }) {
           </h2>
           <p className="text-xs text-gray-400">{item.company}</p>
           <div className="flex items-center gap-1 text-yellow-500 text-xs mt-1">
-            <AiFillStar className="text-yellow-500" />
+            <AiFillStar className="text-yellow-500" /> {item.star}
             <span className="text-gray-600">{item.reviews}</span>
           </div>
           <div className="flex items-center gap-1 mt-1">

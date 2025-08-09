@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import EventBlock from "./EventBlock";
+import StarInput from "./input/StarInput"; // <-- updated star component
 
 const handleCheckboxChange = (value, key, selectedFilters, setFilters) => {
   setFilters((prev) => {
@@ -180,16 +181,30 @@ const FilterSidebar = ({
         }
 
         if (type === "star") {
+          // Convert stored star filter value to number or 0
+          const currentStarValue = selectedFilters[key]
+            ? Number(selectedFilters[key])
+            : 0;
+
           return (
-            <fieldset key={key} className="pb-4">
+            <fieldset key={key} className="p-4">
               <legend className="mb-2 text-base font-semibold capitalize">
                 {label}
               </legend>
-              <CheckboxGroup
-                values={["1", "2", "3", "4", "5"]}
-                keyName={key}
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
+              <StarInput
+                maxStars={5}
+                value={currentStarValue}
+                onChange={(value) => {
+                  setSelectedFilters((prev) => {
+                    if (value === 0) {
+                      const newFilters = { ...prev };
+                      delete newFilters[key];
+                      return newFilters;
+                    }
+                    // Store star filter as number
+                    return { ...prev, [key]: value };
+                  });
+                }}
               />
             </fieldset>
           );
