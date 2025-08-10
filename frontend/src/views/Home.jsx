@@ -75,6 +75,24 @@ const Home = () => {
   const [filterValues, setFilterValues] = useState({});
   const suggestionsRef = useRef();
 
+  // NEW: SeeThroughMode state and scroll handler
+  const [SeeThroughMode, setSeeThroughMode] = useState(true);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > innerHeight) {
+        setSeeThroughMode(false);
+      } else {
+        setSeeThroughMode(true);
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // initialize on mount
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const keys = Object.keys(rawData[0] || {}).filter(
       (k) => !["img", "id", "prevPrice", "newPrice"].includes(k)
@@ -199,11 +217,13 @@ const Home = () => {
           getNavConfig={navData}
           currentRoute={currentRoute}
           setCurrentRoute={setCurrentRoute}
+          SeeThroughMode={SeeThroughMode}
         />
         <Tabbar
           getNavConfig={navData}
           currentRoute={currentRoute}
           setCurrentRoute={setCurrentRoute}
+          SeeThroughMode={SeeThroughMode}
         />
 
         <div className="main-container flex  flex-col md:flex-row">

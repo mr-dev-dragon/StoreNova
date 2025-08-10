@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import TabbarMobile from "./TabbarMobile";
 import TabbarSidebar from "./TabbarSidebar";
 
-const Tabbar = ({ getNavConfig, currentRoute, setCurrentRoute }) => {
+const Tabbar = ({
+  getNavConfig,
+  currentRoute,
+  setCurrentRoute,
+  SeeThroughMode = false, // Default to false if not provided
+}) => {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
@@ -12,7 +17,7 @@ const Tabbar = ({ getNavConfig, currentRoute, setCurrentRoute }) => {
         currentRoute={currentRoute}
         setCurrentRoute={setCurrentRoute}
         setShowSidebar={setShowSidebar}
-        SeeThroughMode={true}
+        SeeThroughMode={SeeThroughMode}
       />
       {showSidebar && (
         <TabbarSidebar
