@@ -11,8 +11,9 @@ import EventBlock from "../Components/filterSidebar/EventBlock";
 import FooterBar from "../Components/footer/FooterBar";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import rawData from "../db/db";
-import "./home.css";
+import "../styles/home.css";
 import { useFavorites } from "../context/FavoritesContext";
+import HeroSection from "../Components/HeroSection/index";
 
 // Star filtering helper — checks for star range including halves
 function filterByStar(data, filterStarValue) {
@@ -190,93 +191,98 @@ const Home = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-100">
-      <Navbar
-        getNavConfig={navData}
-        currentRoute={currentRoute}
-        setCurrentRoute={setCurrentRoute}
-      />
-      <Tabbar
-        getNavConfig={navData}
-        currentRoute={currentRoute}
-        setCurrentRoute={setCurrentRoute}
-      />
-      <div className="main-container flex  flex-col md:flex-row">
-        {showFilters && (
-          <FilterSidebar
-            showSuggestions={showSuggestions}
-            suggestionsRef={suggestionsRef}
-            suggestedItems={suggestedItems}
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-            filterKeys={filterKeys}
-            filterValues={filterValues}
-            titleSearch={titleSearch}
-            setTitleSearch={setTitleSearch}
-            minPrice={minPrice}
-            setMinPrice={setMinPrice}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            variants={animationVariants}
-            config={FILTER_CONFIG}
-            ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
-          />
-        )}
+    <>
+      <HeroSection />
 
-        <main className="flex-1 p-4">
-          <SortBar
-            filteredDataLength={sortedData.length}
-            sortConfig={sortConfig}
-            setSortConfig={setSortConfig}
-            setShowFilters={setShowFilters}
-            config={SORT_OPTIONS}
-          />
-          <button
-            onClick={() => setShowFilters((prev) => !prev)}
-            className="fixed bottom-4 right-4 z-30 rounded-full bg-purple-600 p-2 text-white shadow-lg transition hover:bg-purple-700"
-            aria-label={showFilters ? "Close filters" : "Open filters"}
-          >
-            {showFilters ? (
-              <AiOutlineClose size={20} />
-            ) : (
-              <AiOutlineMenu size={20} />
-            )}
-          </button>
-          <PaginationWrapper
-            data={sortedData}
-            CardComponent={({ item }) => (
-              <Card item={{ ...item, lazy: true }} />
-            )}
-            variants={animationVariants}
-          />
-          <EventBlock
-            type="trending"
-            layout="row"
-            data={[
-              { name: "Porsche 911 Accessories" },
-              { name: "Summer Deals" },
-              { name: "Top Rated Watches" },
-            ]}
-            variants={animationVariants}
-          />
-          <EventBlock
-            type="promo"
-            layout="row"
-            data={[
-              {
-                title: "Big Sale!",
-                description: "Up to 50% off on select items.",
-              },
-              { title: "Free Shipping", description: "On orders over $100." },
-            ]}
-            variants={animationVariants}
-          />
-        </main>
+      <div className="h-screen bg-gray-100">
+        <Navbar
+          getNavConfig={navData}
+          currentRoute={currentRoute}
+          setCurrentRoute={setCurrentRoute}
+        />
+        <Tabbar
+          getNavConfig={navData}
+          currentRoute={currentRoute}
+          setCurrentRoute={setCurrentRoute}
+        />
+
+        <div className="main-container flex  flex-col md:flex-row">
+          {showFilters && (
+            <FilterSidebar
+              showSuggestions={showSuggestions}
+              suggestionsRef={suggestionsRef}
+              suggestedItems={suggestedItems}
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
+              filterKeys={filterKeys}
+              filterValues={filterValues}
+              titleSearch={titleSearch}
+              setTitleSearch={setTitleSearch}
+              minPrice={minPrice}
+              setMinPrice={setMinPrice}
+              maxPrice={maxPrice}
+              setMaxPrice={setMaxPrice}
+              variants={animationVariants}
+              config={FILTER_CONFIG}
+              ignoreKeys={["img", "id", "prevPrice", "newPrice"]}
+            />
+          )}
+
+          <main className="flex-1 p-4">
+            <SortBar
+              filteredDataLength={sortedData.length}
+              sortConfig={sortConfig}
+              setSortConfig={setSortConfig}
+              setShowFilters={setShowFilters}
+              config={SORT_OPTIONS}
+            />
+            <button
+              onClick={() => setShowFilters((prev) => !prev)}
+              className="fixed bottom-4 right-4 z-30 rounded-full bg-purple-600 p-2 text-white shadow-lg transition hover:bg-purple-700"
+              aria-label={showFilters ? "Close filters" : "Open filters"}
+            >
+              {showFilters ? (
+                <AiOutlineClose size={20} />
+              ) : (
+                <AiOutlineMenu size={20} />
+              )}
+            </button>
+            <PaginationWrapper
+              data={sortedData}
+              CardComponent={({ item }) => (
+                <Card item={{ ...item, lazy: true }} />
+              )}
+              variants={animationVariants}
+            />
+            <EventBlock
+              type="trending"
+              layout="row"
+              data={[
+                { name: "Porsche 911 Accessories" },
+                { name: "Summer Deals" },
+                { name: "Top Rated Watches" },
+              ]}
+              variants={animationVariants}
+            />
+            <EventBlock
+              type="promo"
+              layout="row"
+              data={[
+                {
+                  title: "Big Sale!",
+                  description: "Up to 50% off on select items.",
+                },
+                { title: "Free Shipping", description: "On orders over $100." },
+              ]}
+              variants={animationVariants}
+            />
+          </main>
+        </div>
+        <footer className="pt-4 pb-4">
+          <FooterBar links={links} onLinkClick={handleLinkClick} />
+        </footer>
       </div>
-      <footer className="pt-4 pb-4">
-        <FooterBar links={links} onLinkClick={handleLinkClick} />
-      </footer>
-    </div>
+    </>
   );
 };
 

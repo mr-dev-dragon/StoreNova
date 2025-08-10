@@ -1,0 +1,242 @@
+/* =========================
+   HERO SECTION BASE STYLES
+   ========================= */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+}
+
+/* Background video */
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* Dark overlay to make text pop */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+.hero-navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    z-index: 2;
+}
+
+.hero-navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.hero-navbar .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.hero-navbar .nav-links li {
+    font-weight: 600;
+    /* thicker text */
+    cursor: pointer;
+}
+
+.hero-navbar .nav-icons {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* =========================
+   HERO CONTENT
+   ========================= */
+.hero-content {
+    position: absolute;
+    bottom: 15%;
+    left: 5%;
+    max-width: 500px;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 25px;
+    /* from your style */
+}
+
+.btn.primary {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.btn.secondary {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+/* =========================
+   VIDEO CONTROL BUTTON
+   ========================= */
+.video-control {
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+   ========================= */
+@media (max-width: 767px) {
+.hero-section {
+
+    
+        height: 90vh;
+
+    }
+    /* Hide the top navbar completely on mobile */
+    nav.top-navbar {
+        display: none;
+    }
+
+    /* Dark gradient behind text for contrast - bigger width, more transparent */
+    .hero-content {
+        position: absolute;
+        bottom: 12%;
+        /* moved down */
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 95%;
+        /* wider */
+        max-width: 450px;
+        /* limit max width for readability */
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.45);
+        /* more transparent black */
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        /* subtle shadow */
+    }
+
+    /* Title */
+    .hero-content h1 {
+        font-size: clamp(1.8rem, 6vw, 2.4rem);
+        font-weight: 800;
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+        color: white;
+    }
+
+    /* Subtitle */
+    .hero-content p {
+        font-size: clamp(1rem, 3.8vw, 1.15rem);
+        line-height: 1.4;
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+        color: white;
+    }
+
+    /* Buttons container: only 1 button, smaller and centered */
+    .hero-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn {
+        padding: 0.65rem 1.2rem;
+        /* smaller padding */
+        font-size: 0.95rem;
+        border-radius: 30px;
+        width: auto;
+        min-width: 180px;
+        max-width: 280px;
+        transition: all 0.25s ease;
+    }
+
+    /* Black primary button */
+    .btn.primary {
+        background-color: rgba(0, 0, 0, 0.85);
+        color: white;
+    }
+
+    .btn.primary:hover {
+        background-color: rgba(34, 34, 34, 0.9);
+    }
+}
+
+
+@media (max-width: 767px) {
+
+    /* Keep the navbar container visible */
+    .hero-navbar {
+        padding: 1rem 1.5rem;
+    }
+
+    /* Hide everything except the logo */
+    .hero-navbar .nav-links,
+    .hero-navbar .nav-icons {
+        display: none;
+    }
+
+    /* Keep the logo visible and maybe center or left align */
+    .hero-navbar .logo {
+        /* You can add alignment here if you want */
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+}
